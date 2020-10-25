@@ -19,10 +19,10 @@ public class MaintenanceListener implements Listener {
 		if(maintenance) {
 			if(!e.getPlayer().hasPermission("staff.store") && !e.getPlayer().hasPermission("maintenance.join")) {
 				e.setCancelled(true);
-				e.getPlayer().disconnect(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&5&l» &cOur network is currently on maintenance mode!"
-						+ "\n&5&l» &cJoin our discord server @ https://colonymc.net/discord!")));
+				e.getPlayer().disconnect(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&5&lï¿½ &cOur network is currently on maintenance mode!"
+						+ "\n&5&lï¿½ &cJoin our discord server @ https://colonymc.net/discord!")));
 				for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-					p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &d" + e.getPlayer().getName() 
+					p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&lÂ» &d" + e.getPlayer().getName()
 							+ " &ftried to join the network, but it is on maintenance mode!")));
 				}
 			}

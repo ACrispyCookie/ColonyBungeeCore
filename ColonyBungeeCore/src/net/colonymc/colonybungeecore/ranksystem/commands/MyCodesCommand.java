@@ -1,11 +1,6 @@
 package net.colonymc.colonybungeecore.ranksystem.commands;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import net.colonymc.colonyapi.MainDatabase;
 import net.colonymc.colonybungeecore.Main;
 import net.colonymc.colonybungeecore.Messages;
 import net.md_5.bungee.api.ChatColor;
@@ -13,6 +8,11 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MyCodesCommand extends Command {
 
@@ -24,13 +24,12 @@ public class MyCodesCommand extends Command {
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
-		if(Main.getInstance().isConnected()) {
+		if(MainDatabase.isConnected()) {
 			if(sender instanceof ProxiedPlayer) {
 				ProxiedPlayer p = (ProxiedPlayer) sender;
 				try {
 					TextComponent ranks = new TextComponent("");
-					PreparedStatement ps = Main.getConnection().prepareStatement("SELECT * FROM VoucherCodes WHERE uuid='" + p.getUniqueId().toString() + "';");
-					ResultSet rs = ps.executeQuery();
+					ResultSet rs = MainDatabase.getResultSet("SELECT * FROM VoucherCodes WHERE uuid='" + p.getUniqueId().toString() + "';");
 					while(rs.next()) {
 						ranks.addExtra(ChatColor.translateAlternateColorCodes('&', "\n &5&l» &fVoucher Code: &d" + rs.getString("voucherCode") + "\n     &fRank: &d" 
 						+ rs.getString("rank") + "\n     Purchased on: &d" + sdm.format(new Date(rs.getLong("boughtOn")))));

@@ -23,7 +23,7 @@ public class StaffChatListener implements Listener{
 					if(!StringUtils.isEmptyOrWhitespaceOnly(e.getMessage())) {
 						for(ProxiedPlayer staff: ProxyServer.getInstance().getPlayers()) {
 							if(staff.hasPermission("staff.store") || p.hasPermission("builder.store")) {
-								staff.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&d&lStaff» &f(&d" + p.getServer().getInfo().getName() + "&f) &d" + p.getName() + "&f: &f" + e.getMessage())));
+								staff.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&d&lStaffÂ» &f(&d" + p.getServer().getInfo().getName() + "&f) &d" + p.getName() + "&f: &f" + e.getMessage())));
 							}
 						}
 					}
@@ -35,12 +35,12 @@ public class StaffChatListener implements Listener{
 					if(!StringUtils.isEmptyOrWhitespaceOnly(e.getMessage().substring(1))) {
 						for(ProxiedPlayer staff: ProxyServer.getInstance().getPlayers()) {
 							if(staff.hasPermission("staff.store") || p.hasPermission("builder.store")) {
-								staff.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&d&lStaff» &f(&d" + p.getServer().getInfo().getName() + "&f) &d" + p.getName() + "&f: &f" + e.getMessage().substring(1))));
+								staff.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&d&lStaffÂ» &f(&d" + p.getServer().getInfo().getName() + "&f) &d" + p.getName() + "&f: &f" + e.getMessage().substring(1))));
 							}
 						}
 					}
 					else {
-						p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fUsage: &d#<message>")));
+						p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&lÂ» &fUsage: &d#<message>")));
 					}
 				}
 			}

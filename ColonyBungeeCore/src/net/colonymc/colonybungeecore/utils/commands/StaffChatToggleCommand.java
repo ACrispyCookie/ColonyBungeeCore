@@ -10,10 +10,10 @@ import net.md_5.bungee.api.plugin.Command;
 
 public class StaffChatToggleCommand extends Command{
 	
-	public static ArrayList<ProxiedPlayer> toggledplayers = new ArrayList<ProxiedPlayer>();
+	public static ArrayList<ProxiedPlayer> toggledplayers = new ArrayList<>();
 
 	public StaffChatToggleCommand() {
-		super("togglestaffchat", "", new String[] {"togglesc", "tsc", "togglestaffc"});
+		super("togglestaffchat", "", "togglesc", "tsc", "togglestaffc");
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class StaffChatToggleCommand extends Command{
 				ProxiedPlayer staff = (ProxiedPlayer) sender;
 				if(args.length == 0) {
 					if(toggledplayers.contains(staff)) {
-						toggledplayers.remove(toggledplayers.indexOf(staff));
+						toggledplayers.remove(staff);
 						staff.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou disabled your &dstaff chat&f!")));
 					}
 					else {

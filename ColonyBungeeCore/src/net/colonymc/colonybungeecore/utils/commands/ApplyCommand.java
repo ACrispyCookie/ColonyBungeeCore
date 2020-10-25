@@ -15,7 +15,7 @@ public class ApplyCommand extends Command{
 
 	@Override
 	public void execute(CommandSender sender, String[] args) {
-		TextComponent msg = new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou can apply for the Helper rank &d&lHERE"));
+		TextComponent msg = new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&lÂ» &fYou can apply for the Helper rank &d&lHERE"));
 		msg.setClickEvent(new ClickEvent(Action.OPEN_URL, "https://colonymc.net/apply"));
 		sender.sendMessage(msg);
 	}

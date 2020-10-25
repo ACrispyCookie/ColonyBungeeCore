@@ -1,12 +1,6 @@
 package net.colonymc.colonybungeecore.utils.commands;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-
+import net.colonymc.colonyapi.MainDatabase;
 import net.colonymc.colonybungeecore.Main;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
@@ -16,10 +10,16 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+
 public class ShoprankCommand extends Command implements TabExecutor{
 
-	String capitalizedName = "";
-	String name = "";
+	String capitalizedName;
+	String name;
 	
 	public ShoprankCommand(String name) {
 		super("shop" + name);
@@ -51,7 +51,7 @@ public class ShoprankCommand extends Command implements TabExecutor{
 		alreadyHasRank.addExtra(ChatColor.translateAlternateColorCodes('&', "&c█&6███&0█&6███&c█          \n"));
 		alreadyHasRank.addExtra(ChatColor.translateAlternateColorCodes('&', "&c█████████                                                   \n"));
 		alreadyHasRank.addExtra(ChatColor.translateAlternateColorCodes('&', "█████████                                                   "));
-		if(Main.getInstance().isConnected()) {
+		if(MainDatabase.isConnected()) {
 			if(sender instanceof ProxiedPlayer) {
 				ProxiedPlayer p = (ProxiedPlayer) sender;
 				if(sender.hasPermission("colonymc.staffmanager") || p.getUniqueId().toString().equals("37c3bfb6-6fa9-4602-a9bd-a1e95baea85f")) {
@@ -59,54 +59,33 @@ public class ShoprankCommand extends Command implements TabExecutor{
 						if(!args[0].isEmpty()) {
 							if(ProxyServer.getInstance().getPlayer(args[0]) != null) {
 								ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
-								switch(name) {
-								case "colony":
-									if(target.hasPermission("colony.store")) {
+								if ("colony".equals(name)) {
+									if (target.hasPermission("colony.store")) {
 										p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &d" + target.getName() + " &falready has a higher (or equal) rank than this!")));
 										target.sendMessage(alreadyHasRank);
-										String token = getRandomToken(16);
-										try {
-											PreparedStatement ps = Main.getConnection().prepareStatement("INSERT INTO VoucherCodes (name, uuid, rank, voucherCode, boughtOn, claimed) "
-													+ "VALUES ('" + target.getName() + "', '" + target.getUniqueId().toString() + "', '" + name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase() + "', '" + token + "', " + System.currentTimeMillis() + ", 0);");
-											ps.execute();
-										} catch (SQLException e) {
-											p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &cAn error occured while trying to create a new voucher code! Please contact a staff member and save this code: " + token)));
-											e.printStackTrace();
-										}
-										break;
-									}
-									else if(target.hasPermission("staff.store") || target.hasPermission("famous.store")) {
+										String token = getRandomToken();
+										MainDatabase.sendStatement("INSERT INTO VoucherCodes (name, uuid, rank, voucherCode, boughtOn, claimed) "
+												+ "VALUES ('" + target.getName() + "', '" + target.getUniqueId().toString() + "', '" + name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase() + "', '" + token + "', " + System.currentTimeMillis() + ", 0);");
+									} else if (target.hasPermission("staff.store") || target.hasPermission("famous.store")) {
 										p.chat("/lp user " + args[0] + " parent add " + name);
 										p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou added &d" + capitalizedName + " &frank to &d" + target.getName() + "&f!")));
-										target.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &d&l"  + capitalizedName + " &frank has been added to your current one!")));
-										break;
-									}
-									else {
+										target.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &d&l" + capitalizedName + " &frank has been added to your current one!")));
+									} else {
 										p.chat("/lp user " + args[0] + " parent set " + name);
 										p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou gave &d" + target.getName() + " &fthe rank &d&l" + capitalizedName)));
 										target.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYour rank is now &d&l" + capitalizedName)));
-										break;
 									}
-								default:
-									if(target.hasPermission(name + ".store")) {
+								} else {
+									if (target.hasPermission(name + ".store")) {
 										p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &d" + target.getName() + " &falready has a higher (or equal) rank than this!")));
 										target.sendMessage(alreadyHasRank);
-										String token = getRandomToken(16);
-										try {
-											PreparedStatement ps = Main.getConnection().prepareStatement("INSERT INTO VoucherCodes (name, uuid, rank, voucherCode, boughtOn, claimed) "
-													+ "VALUES ('" + target.getName() + "', '" + target.getUniqueId().toString() + "', '" + name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase() + "', '" + token + "', " + System.currentTimeMillis() + ", 0);");
-											ps.execute();
-										} catch (SQLException e) {
-											p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &cAn error occured while trying to create a new voucher code! Please contact a staff member and save this code: " + token)));
-											e.printStackTrace();
-										}
-										break;
-									}
-									else {
+										String token = getRandomToken();
+										MainDatabase.sendStatement("INSERT INTO VoucherCodes (name, uuid, rank, voucherCode, boughtOn, claimed) "
+												+ "VALUES ('" + target.getName() + "', '" + target.getUniqueId().toString() + "', '" + name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase() + "', '" + token + "', " + System.currentTimeMillis() + ", 0);");
+									} else {
 										p.chat("/lp user " + args[0] + " parent set " + name);
 										p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou set &d" + target.getName() + "&f's rank to &d&l" + capitalizedName)));
 										target.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYour rank is now &d&l" + capitalizedName)));
-										break;
 									}
 								}
 									
@@ -131,36 +110,27 @@ public class ShoprankCommand extends Command implements TabExecutor{
 				if(!args[0].isEmpty()) {
 					if(ProxyServer.getInstance().getPlayer(args[0]) != null) {
 						ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
-						switch(name) {
-						case "colony":
-							if(target.hasPermission("colony.store")) {
+						if ("colony".equals(name)) {
+							if (target.hasPermission("colony.store")) {
 								System.out.println(ChatColor.translateAlternateColorCodes('&', " &5&l» &d" + target.getName() + " &falready has a higher (or equal) rank than this!"));
 								target.sendMessage(alreadyHasRank);
-								break;
-							}
-							else if(target.hasPermission("staff.store") || target.hasPermission("famous.store")) {
+							} else if (target.hasPermission("staff.store") || target.hasPermission("famous.store")) {
 								ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + args[0] + " parent add " + name);
 								System.out.println(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou added &d" + capitalizedName + " &frank to &d" + target.getName() + "&f!"));
-								target.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &d&l"  + capitalizedName + " &frank has been added to your current one!")));
-								break;
-							}
-							else {
+								target.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &d&l" + capitalizedName + " &frank has been added to your current one!")));
+							} else {
 								ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + args[0] + " parent set " + name);
 								System.out.println(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou gave &d" + target.getName() + " &fthe rank &d&l" + capitalizedName));
 								target.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYour rank is now &d&l" + capitalizedName)));
-								break;
 							}
-						default:
-							if(target.hasPermission(name + ".store")) {
+						} else {
+							if (target.hasPermission(name + ".store")) {
 								System.out.println(ChatColor.translateAlternateColorCodes('&', " &5&l» &d" + target.getName() + " &falready has a higher (or equal) rank than this!"));
 								target.sendMessage(alreadyHasRank);
-								break;
-							}
-							else {
+							} else {
 								ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + args[0] + " parent set " + name);
 								System.out.println(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou set &d" + target.getName() + "&f's rank to &d&l" + capitalizedName));
 								target.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYour rank is now &d&l" + capitalizedName)));
-								break;
 							}
 						}
 							
@@ -173,32 +143,31 @@ public class ShoprankCommand extends Command implements TabExecutor{
 		}
 		else {
 			sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &cAn error occured trying to connect to the database. Please contact an administrator.")));
-			String st = "";
+			StringBuilder st = new StringBuilder();
 			for(String s : args) {
-				st = st + " " + s;
+				st.append(" ").append(s);
 			}
 			Main.writeToLog("Couldn't execute command: shop" + name + st);
 		}
 	}
 	
-	private static String getRandomToken(int n) {
+	private static String getRandomToken() {
 		String characters = "ABCDEFGHIJKLMNOPQRSTUVYXZ1234567890";
-		String token = "";
-		for(int i = 0; i < n; i++) {
+		StringBuilder token = new StringBuilder();
+		for(int i = 0; i < 16; i++) {
 			Random rand = new Random();
 			int index = rand.nextInt(35);
-			token = token + characters.substring(index, index + 1);
+			token.append(characters.charAt(index));
 		}
 		String tokenWithDashes = token.substring(0,4) + "-" + token.substring(4, 8) + "-" + token.substring(8, 12) + "-" + token.substring(12, 16);
 		try {
-			PreparedStatement ps = Main.getConnection().prepareStatement("SELECT voucherCode FROM VoucherCodes");
-			ResultSet rs = ps.executeQuery();
+			ResultSet rs = MainDatabase.getResultSet("SELECT voucherCode FROM VoucherCodes");
 			while(rs.next()) {
 				if(rs.getString("voucherCode").equals(tokenWithDashes)) {
-					for(int i = 0; i < n; i++) {
+					for(int i = 0; i < 16; i++) {
 						Random rand = new Random();
 						int index = rand.nextInt(35);
-						token = token + characters.substring(index, index + 1);
+						token.append(characters.charAt(index));
 					}
 					tokenWithDashes = token.substring(0,4) + "-" + token.substring(4, 8) + "-" + token.substring(8, 12) + "-" + token.substring(12, 16);
 				}

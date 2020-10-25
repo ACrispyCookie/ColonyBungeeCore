@@ -10,9 +10,8 @@ import net.md_5.bungee.event.EventHandler;
 
 public class DonationsListener implements Listener {
 	
-	ArrayList<Donation> failedDonations = new ArrayList<Donation>();
-	
-	@SuppressWarnings("deprecation")
+	ArrayList<Donation> failedDonations = new ArrayList<>();
+
 	@EventHandler
 	public void onDonation(DonationReceivedEvent e) {
 		String username = e.getUsername();

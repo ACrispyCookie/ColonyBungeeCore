@@ -12,7 +12,7 @@ import net.md_5.bungee.api.plugin.Command;
 public class HubCommand extends Command{
 
 	public HubCommand() {
-		super("hub", "", new String[] {"lobby", "l"});
+		super("hub", "", "lobby", "l");
 	}
 
 	@Override
@@ -25,11 +25,11 @@ public class HubCommand extends Command{
 				p.connect(hub);
 			}
 			else {
-				p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou are already connected to the hub!")));
+				p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&lÂ» &fYou are already connected to the hub!")));
 			}
 		}
 		else {
-			sender.sendMessage(new TextComponent(" » Only players can use this command!"));
+			sender.sendMessage(new TextComponent(" Â» Only players can use this command!"));
 		}
 	}
 

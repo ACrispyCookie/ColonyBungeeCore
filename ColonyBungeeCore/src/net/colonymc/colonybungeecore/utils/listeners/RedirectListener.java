@@ -20,11 +20,11 @@ public class RedirectListener implements Listener{
 			ProxiedPlayer p = e.getPlayer();
 			if(p.getServer().getInfo() != hubServer) {
 				p.connect(hubServer);
-				TextComponent kickMessage = new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &cYou have been sent back to the lobby! Reason:"));
+				TextComponent kickMessage = new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&lÂ» &cYou have been sent back to the lobby! Reason:"));
 				p.sendMessage(kickMessage);
 			}
 			else {
-				TextComponent kickMessage = new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &cUnable to join this server! Reason:"));
+				TextComponent kickMessage = new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&lÂ» &cUnable to join this server! Reason:"));
 				p.sendMessage(kickMessage);
 			}
 		}

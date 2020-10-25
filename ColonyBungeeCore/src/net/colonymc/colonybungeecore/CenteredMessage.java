@@ -1,30 +1,32 @@
 package net.colonymc.colonybungeecore;
 
-import net.md_5.bungee.api.ChatColor;
-
 public class CenteredMessage {
 	
 	private final static int CENTER_PX = 154;
 	private final static int MAX_PX = 250;
 	
 	public static String getCenteredMessage(String message){
-		message = ChatColor.translateAlternateColorCodes('&', message);
 		int messagePxSize = 0;
 		boolean previousCode = false;
 		boolean isBold = false;
 		int charIndex = 0;
 		int lastSpaceIndex = 0;
 		for(char c : message.toCharArray()){
-			if(c == '§'){
+			if(c == '&'){
 				previousCode = true;
 				continue;
-			}else if(previousCode == true){
+			} else if(previousCode){
 				previousCode = false;
 				if(c == 'l' || c == 'L'){
 					isBold = true;
 					continue;
-				}else isBold = false;
-			}else if(c == ' ') lastSpaceIndex = charIndex;
+				} else {
+					isBold = false;
+				}
+			}
+			else if(c == ' ') {
+				lastSpaceIndex = charIndex;
+			}
 			else{
 				DefaultFontInfo dFI = DefaultFontInfo.getDefaultFontInfo(c);
 				messagePxSize += isBold ? dFI.getBoldLength() : dFI.getLength();

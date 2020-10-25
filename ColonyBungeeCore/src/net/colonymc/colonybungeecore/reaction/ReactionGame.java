@@ -18,16 +18,16 @@ public class ReactionGame implements Runnable {
 	type currentType = null;
 	String question = null;
 	String answer = null;
-	ServerInfo server = null;
+	ServerInfo server;
 	ScheduledTask task = null;
 	ReactionsQuestions questions;
-	public static enum type {
+	public enum type {
 		MATH,
 		WORD,
 		UNSCRAMBLE,
 		RANDOM
-	};
-	
+	}
+
 	public ReactionGame(ServerInfo server, type selectedType) {
 		if(selectedType == type.RANDOM) {
 			Random rand = new Random();
@@ -65,13 +65,10 @@ public class ReactionGame implements Runnable {
 	}
 	
 	public void startGame() {
-		if(!ReactionCommand.reactions.containsKey(server)) {
-			task = ProxyServer.getInstance().getScheduler().schedule(Main.getInstance(), this, 0, 1, TimeUnit.MILLISECONDS);
-		}
-		else {
+		if (ReactionCommand.reactions.containsKey(server)) {
 			ReactionCommand.reactions.get(server).endGame(null);
-			task = ProxyServer.getInstance().getScheduler().schedule(Main.getInstance(), this, 0, 1, TimeUnit.MILLISECONDS);
 		}
+		task = ProxyServer.getInstance().getScheduler().schedule(Main.getInstance(), this, 0, 1, TimeUnit.MILLISECONDS);
 	}
 	
 	public void endGame(ProxiedPlayer winner) {

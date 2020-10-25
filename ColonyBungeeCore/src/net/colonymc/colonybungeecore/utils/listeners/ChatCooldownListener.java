@@ -14,8 +14,8 @@ import net.md_5.bungee.event.EventHandler;
 
 public class ChatCooldownListener implements Listener{
 	
-	HashMap<ProxiedPlayer, Long> cooldowns = new HashMap<ProxiedPlayer, Long>();
-	HashMap<ProxiedPlayer, String> lastmessage = new HashMap<ProxiedPlayer, String>();
+	HashMap<ProxiedPlayer, Long> cooldowns = new HashMap<>();
+	HashMap<ProxiedPlayer, String> lastmessage = new HashMap<>();
 	
 	@EventHandler
 	public void onChat(ChatEvent e) {
@@ -48,15 +48,9 @@ public class ChatCooldownListener implements Listener{
 										if(msg.equals(e.getMessage())) {
 											e.setCancelled(true);
 											p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fPlease do not repeat the same message!")));
-											lastmessage.put(p, e.getMessage());
-										}
-										else {
-											lastmessage.put(p, e.getMessage());
 										}
 									}
-									else {
-										lastmessage.put(p, e.getMessage());
-									}
+									lastmessage.put(p, e.getMessage());
 								}
 							}
 						}
@@ -76,11 +70,8 @@ public class ChatCooldownListener implements Listener{
 								if(msg.equals(e.getMessage())) {
 									e.setCancelled(true);
 									p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fPlease do not repeat the same message!")));
-									lastmessage.put(p, e.getMessage());
 								}
-								else {
-									lastmessage.put(p, e.getMessage());
-								}
+								lastmessage.put(p, e.getMessage());
 							}
 							else {
 								lastmessage.put(p, e.getMessage());
@@ -95,11 +86,9 @@ public class ChatCooldownListener implements Listener{
 	private boolean isUrlOrIp(String message) {
 		String URL_REGEX = "[a-zA-Z0-9\\-\\.]+\\s?(\\.|dot|\\(dot\\)|-|;|:|,)\\s?(com|org|net|cz|co|uk|sk|site|gov|biz|mobi|xxx|eu|me|io|gr|be|gl|ly)";
 		Pattern p = Pattern.compile(URL_REGEX);
-		Matcher m = p.matcher(message);//replace with string to compare
+		Matcher m = p.matcher(message); //replace with string to compare
 		if(m.find()) {
-			if(!m.group().equals("colonymc.net") && !m.group().equals("youtube.net") && !m.group().equals("store.colonymc.net")) {
-				return true;
-			}
+			return !m.group().equals("colonymc.net") && !m.group().equals("youtube.net") && !m.group().equals("store.colonymc.net");
 		}
 		return false;
 	}

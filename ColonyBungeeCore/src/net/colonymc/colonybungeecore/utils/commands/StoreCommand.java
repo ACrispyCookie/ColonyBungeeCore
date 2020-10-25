@@ -9,7 +9,7 @@ import net.md_5.bungee.api.plugin.Command;
 public class StoreCommand extends Command{
 
 	public StoreCommand() {
-		super("store", "", new String[] {"buy","donate"});
+		super("store", "", "buy","donate");
 	}
 
 	@Override

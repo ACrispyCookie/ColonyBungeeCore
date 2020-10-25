@@ -13,8 +13,8 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 
 public class RankCommand extends Command implements TabExecutor{
 
-	String capitalizedName = "";
-	String name = "";
+	String capitalizedName;
+	String name;
 	
 	public RankCommand(String name) {
 		super(name);
@@ -153,22 +153,14 @@ public class RankCommand extends Command implements TabExecutor{
 			if(!args[0].isEmpty()) {
 				if(ProxyServer.getInstance().getPlayer(args[0]) != null) {
 					ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
-					switch(name) {
-					default:
-						ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + args[0] + " parent set " + name);
-						System.out.println(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou set &d" + target.getName() + "&f's rank to &d&l" + capitalizedName));
-						target.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYour rank is now &d&l" + capitalizedName)));
-						break;
-					}
-						
+					ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + args[0] + " parent set " + name);
+					System.out.println(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou set &d" + target.getName() + "&f's rank to &d&l" + capitalizedName));
+					target.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYour rank is now &d&l" + capitalizedName)));
+
 				}
 				else {
-					switch(name) {
-					default:
-						ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + args[0] + " parent set " + name);
-						System.out.println(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou set &d" + args[0] + "&f's rank to &d&l" + capitalizedName));
-						break;
-					}
+					ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + args[0] + " parent set " + name);
+					System.out.println(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou set &d" + args[0] + "&f's rank to &d&l" + capitalizedName));
 				}
 			}
 			else {

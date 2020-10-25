@@ -6,9 +6,9 @@ import java.util.Random;
 
 public class ReactionsQuestions {
 	
-	static ArrayList<String[]> math = new ArrayList<String[]>();
-	static ArrayList<String> write = new ArrayList<String>();
-	static ArrayList<String[]> unscramble = new ArrayList<String[]>();
+	static ArrayList<String[]> math = new ArrayList<>();
+	static ArrayList<String> write = new ArrayList<>();
+	static ArrayList<String[]> unscramble = new ArrayList<>();
 	
 	public ReactionsQuestions() {
 		setupMath();
@@ -44,7 +44,7 @@ public class ReactionsQuestions {
 			case 0:
 				firstNumber = rand.nextInt(200);
 				secondNumber = rand.nextInt(200);
-				entry = new String[] {String.valueOf(firstNumber) + "+" + String.valueOf(secondNumber), String.valueOf(firstNumber + secondNumber)};
+				entry = new String[] {firstNumber + "+" + secondNumber, String.valueOf(firstNumber + secondNumber)};
 				math.add(entry);
 				break;
 			case 1:
@@ -54,13 +54,13 @@ public class ReactionsQuestions {
 					firstNumber = rand.nextInt(200);
 					secondNumber = rand.nextInt(200);
 				}
-				entry = new String[] {String.valueOf(firstNumber) + "-" + String.valueOf(secondNumber), String.valueOf(firstNumber - secondNumber)};
+				entry = new String[] {firstNumber + "-" + secondNumber, String.valueOf(firstNumber - secondNumber)};
 				math.add(entry);
 				break;
 			case 2:
 				firstNumber = rand.nextInt(20);
 				secondNumber = rand.nextInt(20);
-				entry = new String[] {String.valueOf(firstNumber) + "x" + String.valueOf(secondNumber), String.valueOf(firstNumber * secondNumber)};
+				entry = new String[] {firstNumber + "x" + secondNumber, String.valueOf(firstNumber * secondNumber)};
 				math.add(entry);
 				break;
 			case 3:
@@ -70,7 +70,7 @@ public class ReactionsQuestions {
 					firstNumber = rand.nextInt(120);
 					secondNumber = rand.nextInt(120) + 2;
 				}
-				entry = new String[] {String.valueOf(firstNumber) + "/" + String.valueOf(secondNumber), String.valueOf(firstNumber / secondNumber)};
+				entry = new String[] {firstNumber + "/" + secondNumber, String.valueOf(firstNumber / secondNumber)};
 				math.add(entry);
 				break;
 			}
@@ -86,7 +86,7 @@ public class ReactionsQuestions {
 	}
 	
 	private String getScrambled(String word) {
-		ArrayList<Character> chars = new ArrayList<Character>(word.length());
+		ArrayList<Character> chars = new ArrayList<>(word.length());
 		for ( char c : word.toCharArray() ) {
 		   chars.add(c);
 		}
@@ -95,8 +95,7 @@ public class ReactionsQuestions {
 		for ( int i = 0; i < shuffled.length; i++ ) {
 		   shuffled[i] = chars.get(i);
 		}
-		String shuffledWord = new String(shuffled);
-		return shuffledWord;
+		return new String(shuffled);
 	}
 
 }

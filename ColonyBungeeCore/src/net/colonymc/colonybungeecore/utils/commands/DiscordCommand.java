@@ -15,7 +15,7 @@ public class DiscordCommand extends Command {
 
 	@Override
 	public void execute(CommandSender sender, String[] args) {
-		TextComponent msg = new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou can join our discord server &d&lHERE"));
+		TextComponent msg = new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&lÂ» &fYou can join our discord server &d&lHERE"));
 		msg.setClickEvent(new ClickEvent(Action.OPEN_URL, "https://colonymc.net/discord"));
 		sender.sendMessage(msg);
 	}

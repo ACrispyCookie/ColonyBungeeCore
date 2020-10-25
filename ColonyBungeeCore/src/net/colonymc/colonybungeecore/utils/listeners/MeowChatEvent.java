@@ -15,12 +15,12 @@ public class MeowChatEvent implements Listener{
 			if(!e.getMessage().startsWith("/")) {
 				if(MeowCommand.meows.contains(p.getServer().getInfo().getName()) || MeowCommand.meows.contains("all")) {
 						String[] words = e.getMessage().split(" ");
-						String msg = "";
+						StringBuilder msg = new StringBuilder();
 						for(String s : words) {
 							s = "meow ";
-							msg = msg + s;
+							msg.append(s);
 						}
-						e.setMessage(msg);
+						e.setMessage(msg.toString());
 				}
 			}
 		}

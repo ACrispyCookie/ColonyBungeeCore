@@ -16,7 +16,7 @@ public class DisableCommandsListener implements Listener{
 			if(!p.hasPermission("*")) {
 				if(e.getMessage().startsWith("/bungee") || e.getMessage().startsWith("/glist") || e.getMessage().startsWith("/server")) {
 					e.setCancelled(true);
-					p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &cYou cannot execute this command.")));
+					p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&lÂ» &cYou cannot execute this command.")));
 				}
 			}
 		}

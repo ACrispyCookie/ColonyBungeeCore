@@ -17,7 +17,7 @@ public class ReactionCommand extends Command {
 	}
 
 	TextComponent usage = new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fUsage: &d/reaction math/word/unscramble/random [server]"));
-	public static HashMap<ServerInfo, ReactionGame> reactions = new HashMap<ServerInfo, ReactionGame>();
+	public static HashMap<ServerInfo, ReactionGame> reactions = new HashMap<>();
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {

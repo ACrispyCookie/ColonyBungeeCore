@@ -12,7 +12,7 @@ import net.md_5.bungee.api.plugin.Command;
 public class StaffChatCommand extends Command{
 
 	public StaffChatCommand() {
-		super("staffchat", "", new String[] {"sc", "schat", "adminchat"});
+		super("staffchat", "", "sc", "schat", "adminchat");
 	}
 
 	@Override

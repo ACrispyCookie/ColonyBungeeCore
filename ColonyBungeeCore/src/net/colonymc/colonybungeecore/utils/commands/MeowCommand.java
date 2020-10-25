@@ -16,7 +16,7 @@ public class MeowCommand extends Command{
 		super("meow");
 	}
 	
-	public static ArrayList<String> meows = new ArrayList<String>();
+	public static ArrayList<String> meows = new ArrayList<>();
 
 	@Override
 	public void execute(CommandSender sender, String[] args) {
@@ -27,7 +27,7 @@ public class MeowCommand extends Command{
 						if(sender instanceof ProxiedPlayer) {
 							ProxiedPlayer p = (ProxiedPlayer) sender;
 							if(meows.contains(p.getServer().getInfo().getName())) {
-								meows.remove(meows.indexOf(p.getServer().getInfo().getName()));
+								meows.remove(p.getServer().getInfo().getName());
 								p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fMeow mode has been &cdisabled &ffor the server: &d" + p.getServer().getInfo().getName() + "&f!")));
 							}
 							else {
@@ -36,7 +36,7 @@ public class MeowCommand extends Command{
 							}
 						}
 						else {
-							ArrayList<String> servers = new ArrayList<String>();
+							ArrayList<String> servers = new ArrayList<>();
 							for(ServerInfo s : ProxyServer.getInstance().getServers().values()) {
 								servers.add(s.getName());
 							}
@@ -51,7 +51,7 @@ public class MeowCommand extends Command{
 				else if(ProxyServer.getInstance().getServerInfo(args[0]) != null) {
 					if(!meows.contains("all")) {
 						if(meows.contains(ProxyServer.getInstance().getServerInfo(args[0]).getName())) {
-							meows.remove(meows.indexOf(ProxyServer.getInstance().getServerInfo(args[0]).getName()));
+							meows.remove(ProxyServer.getInstance().getServerInfo(args[0]).getName());
 							sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fMeow mode has been &cdisabled &ffor the server: &d" + args[0] + "&f!")));
 						}
 						else {
@@ -65,7 +65,7 @@ public class MeowCommand extends Command{
 				}
 				else if(args[0].equals("all")) {
 					if(meows.contains("all")) {
-						meows.remove(meows.indexOf("all"));
+						meows.remove("all");
 						sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fMeow mode has been &cdisabled &ffor the whole network!")));
 					}
 					else {
@@ -75,7 +75,7 @@ public class MeowCommand extends Command{
 					}
 				}
 				else {
-					ArrayList<String> servers = new ArrayList<String>();
+					ArrayList<String> servers = new ArrayList<>();
 					for(ServerInfo s : ProxyServer.getInstance().getServers().values()) {
 						servers.add(s.getName());
 					}
@@ -88,7 +88,7 @@ public class MeowCommand extends Command{
 					if(!meows.contains("all")) {
 						ProxiedPlayer p = (ProxiedPlayer) sender;
 						if(meows.contains(p.getServer().getInfo().getName())) {
-							meows.remove(meows.indexOf(p.getServer().getInfo().getName()));
+							meows.remove(p.getServer().getInfo().getName());
 							p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fMeow mode has been &cdisabled &ffor the server: &d" + p.getServer().getInfo().getName() + "&f!")));
 						}
 						else {
@@ -101,7 +101,7 @@ public class MeowCommand extends Command{
 					}
 				}
 				else {
-					ArrayList<String> servers = new ArrayList<String>();
+					ArrayList<String> servers = new ArrayList<>();
 					for(ServerInfo s : ProxyServer.getInstance().getServers().values()) {
 						servers.add(s.getName());
 					}

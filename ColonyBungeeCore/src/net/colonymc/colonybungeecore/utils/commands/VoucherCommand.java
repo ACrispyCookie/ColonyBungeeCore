@@ -1,6 +1,5 @@
 package net.colonymc.colonybungeecore.utils.commands;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -10,6 +9,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import net.colonymc.colonyapi.MainDatabase;
 import net.colonymc.colonybungeecore.Main;
 import net.colonymc.colonybungeecore.Messages;
 import net.colonymc.colonybungeecore.UUIDGetter;
@@ -27,7 +27,7 @@ public class VoucherCommand extends Command implements TabExecutor{
 		super("rankvoucher");
 	}
 	
-	ArrayList<String> ranks = new ArrayList<String>();
+	ArrayList<String> ranks = new ArrayList<>();
 	
 	@Override
 	public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
@@ -43,7 +43,7 @@ public class VoucherCommand extends Command implements TabExecutor{
 
 	@Override
 	public void execute(CommandSender sender, String[] args) {
-		if(Main.getInstance().isConnected()) {
+		if(MainDatabase.isConnected()) {
 			ranks.add("prince");
 			ranks.add("king");
 			ranks.add("archon");
@@ -56,22 +56,16 @@ public class VoucherCommand extends Command implements TabExecutor{
 							ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[1]);
 							boolean rankExists = false;
 							for(String s : ranks) {
-								if(s.equalsIgnoreCase(args[2])) {
+								if (s.equalsIgnoreCase(args[2])) {
 									rankExists = true;
+									break;
 								}
 							}
 							if(rankExists) {
-								String token = getRandomToken(16);
-								try {
-									PreparedStatement ps = Main.getConnection().prepareStatement("INSERT INTO VoucherCodes (name, uuid, rank, voucherCode, boughtOn, claimed) "
-											+ "VALUES ('" + target.getName() + "', '" + target.getUniqueId().toString() + "', '" + args[2].substring(0, 1).toUpperCase() + args[2].substring(1).toLowerCase() + "', '" + token + "', " + System.currentTimeMillis() + ", 0);");
-									ps.execute();
-									sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou gave &d" + target.getName() + " &fa rank voucher for the rank &d" + args[2] + "&f!")));
-								} catch (SQLException e) {
-									sender.sendMessage(new TextComponent(Messages.errorOccured));
-									Main.writeToLog("Failed to give rank voucher to " + target.getName() + " for the rank " + args[2] + "! Executed by " + sender.getName() + ".");
-									e.printStackTrace();
-								}
+								String token = getRandomToken();
+								MainDatabase.sendStatement("INSERT INTO VoucherCodes (name, uuid, rank, voucherCode, boughtOn, claimed) "
+										+ "VALUES ('" + target.getName() + "', '" + target.getUniqueId().toString() + "', '" + args[2].substring(0, 1).toUpperCase() + args[2].substring(1).toLowerCase() + "', '" + token + "', " + System.currentTimeMillis() + ", 0);");
+								sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou gave &d" + target.getName() + " &fa rank voucher for the rank &d" + args[2] + "&f!")));
 							}
 							else {
 								sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fThis rank doesn't exist. Please enter a valid one.")));
@@ -80,22 +74,16 @@ public class VoucherCommand extends Command implements TabExecutor{
 						else if(UUIDGetter.getUUID(args[1]) != null){
 							boolean rankExists = false;
 							for(String s : ranks) {
-								if(s.equalsIgnoreCase(args[2])) {
+								if (s.equalsIgnoreCase(args[2])) {
 									rankExists = true;
+									break;
 								}
 							}
 							if(rankExists) {
-								String token = getRandomToken(16);
-								try {
-									PreparedStatement ps = Main.getConnection().prepareStatement("INSERT INTO VoucherCodes (name, uuid, rank, voucherCode, boughtOn, claimed) "
-											+ "VALUES ('" + args[1] + "', '" + UUIDGetter.getUUID(args[1]) + "', '" + args[2].substring(0, 1).toUpperCase() + args[2].substring(1).toLowerCase() + "', '" + token + "', " + System.currentTimeMillis() + ", 0);");
-									ps.execute();
-									sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou gave &d" + args[1] + " &fa rank voucher for the rank &d" + args[2] + "&f!")));
-								} catch (SQLException e) {
-									sender.sendMessage(new TextComponent(Messages.errorOccured));
-									Main.writeToLog("Failed to give rank voucher to " + args[1] + " for the rank " + args[2] + "! Executed by " + sender.getName() + ".");
-									e.printStackTrace();
-								}
+								String token = getRandomToken();
+								MainDatabase.sendStatement("INSERT INTO VoucherCodes (name, uuid, rank, voucherCode, boughtOn, claimed) "
+										+ "VALUES ('" + args[1] + "', '" + UUIDGetter.getUUID(args[1]) + "', '" + args[2].substring(0, 1).toUpperCase() + args[2].substring(1).toLowerCase() + "', '" + token + "', " + System.currentTimeMillis() + ", 0);");
+								sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou gave &d" + args[1] + " &fa rank voucher for the rank &d" + args[2] + "&f!")));
 							}
 							else {
 								sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fThis rank doesn't exist. Please enter a valid one.")));
@@ -113,11 +101,10 @@ public class VoucherCommand extends Command implements TabExecutor{
 					switch(args[0]) {
 					case "remove":
 						try {
-							PreparedStatement ps = Main.getConnection().prepareStatement("SELECT * FROM VoucherCodes WHERE voucherCode='" + args[1] + "';");
-							ResultSet rs = ps.executeQuery();
+							ResultSet rs = MainDatabase.getResultSet("SELECT * FROM VoucherCodes WHERE voucherCode='" + args[1] + "';");
 							if(rs.next()) {
 								sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou removed the voucher &d" + args[1] + " &ffrom the player &d" + rs.getString("name") + " &ffor the rank &d" + rs.getString("rank") +"&f!")));
-								ps.execute("DELETE FROM VoucherCodes WHERE voucherCode='" + args[1] + "';");
+								MainDatabase.sendStatement("DELETE FROM VoucherCodes WHERE voucherCode='" + args[1] + "';");
 							}
 							else {
 								sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fThis voucher code doesn't exist!")));
@@ -131,8 +118,7 @@ public class VoucherCommand extends Command implements TabExecutor{
 					case "list":
 						if(UUIDGetter.getUUID(args[1]) != null) {
 							try {
-								PreparedStatement ps = Main.getConnection().prepareStatement("SELECT * FROM VoucherCodes WHERE name='" + args[1] + "';");
-								ResultSet rs = ps.executeQuery();
+								ResultSet rs = MainDatabase.getResultSet("SELECT * FROM VoucherCodes WHERE name='" + args[1] + "';");
 								boolean next = rs.next();
 								if(next) {
 									TextComponent ranks = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&f&m------------------------------------------------------------\n &5&l» &fRank vouchers of the player &d" + rs.getString("name") + "&f:\n"));
@@ -189,24 +175,23 @@ public class VoucherCommand extends Command implements TabExecutor{
 		}
 	}
 	
-	private static String getRandomToken(int n) {
+	private static String getRandomToken() {
 		String characters = "ABCDEFGHIJKLMNOPQRSTUVYXZ1234567890";
-		String token = "";
-		for(int i = 0; i < n; i++) {
+		StringBuilder token = new StringBuilder();
+		for(int i = 0; i < 16; i++) {
 			Random rand = new Random();
 			int index = rand.nextInt(35);
-			token = token + characters.substring(index, index + 1);
+			token.append(characters.charAt(index));
 		}
 		String tokenWithDashes = token.substring(0,4) + "-" + token.substring(4, 8) + "-" + token.substring(8, 12) + "-" + token.substring(12, 16);
 		try {
-			PreparedStatement ps = Main.getConnection().prepareStatement("SELECT voucherCode FROM VoucherCodes");
-			ResultSet rs = ps.executeQuery();
+			ResultSet rs = MainDatabase.getResultSet("SELECT voucherCode FROM VoucherCodes");
 			while(rs.next()) {
 				if(rs.getString("voucherCode").equals(tokenWithDashes)) {
-					for(int i = 0; i < n; i++) {
+					for(int i = 0; i < 16; i++) {
 						Random rand = new Random();
 						int index = rand.nextInt(35);
-						token = token + characters.substring(index, index + 1);
+						token.append(characters.charAt(index));
 					}
 					tokenWithDashes = token.substring(0,4) + "-" + token.substring(4, 8) + "-" + token.substring(8, 12) + "-" + token.substring(12, 16);
 				}

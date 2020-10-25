@@ -9,7 +9,7 @@ import net.md_5.bungee.api.plugin.Command;
 public class RulesCommand extends Command{
 
 	public RulesCommand() {
-		super("rules", "" , new String[] {"rule"});
+		super("rules", "" , "rule");
 	}
 
 	@Override
