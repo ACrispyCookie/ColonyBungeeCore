@@ -36,11 +36,8 @@ public class Main extends Plugin {
 				if(!MainDatabase.isConnecting()) {
 					checkForDatabase.cancel();
 					System.out.println("[ColonyBungeeCore] has been enabled successfully!");
-					file = new File(ProxyServer.getInstance().getPluginsFolder() + "/ColonyBungeeCore/config.yml");
-					if(!file.exists()) {
-						createNewFile();
-					}
-					setupLogFile();
+					loadFile();
+					loadLogFile();
 					loadUtilCommands();
 					loadUtilListeners();
 					loadRankCommands();
@@ -69,27 +66,33 @@ public class Main extends Plugin {
 		System.out.println("[ColonyBungeeCore] has been disabled successfully!");
 	}
 	
-	private void setupLogFile() {
+	private void loadLogFile() {
 		logfile = new File(ProxyServer.getInstance().getPluginsFolder() + "/ColonyBungeeCore/log.txt");
-		if(!logfile.exists()) {
-			createNewLogFile();
-		}
-	}
-	
-	private void createNewLogFile() {
 		try {
-			logfile.createNewFile();
+			if(!logfile.exists()){
+				logfile.createNewFile();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void createNewFile() {
+	private void loadFile() {
+		file = new File(ProxyServer.getInstance().getPluginsFolder() + "/ColonyBungeeCore/config.yml");
 		try {
-			file.createNewFile();
-			configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
-			configuration.set("maintenance", false);
-			ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
+			if(!new File(ProxyServer.getInstance().getPluginsFolder() + "/ColonyBungeeCore").exists()) {
+				new File(ProxyServer.getInstance().getPluginsFolder() + "/ColonyBungeeCore").mkdirs();
+				file.createNewFile();
+			}
+			else if(!file.exists()){
+				file.createNewFile();
+				configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+				configuration.set("maintenance", false);
+				ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
+			}
+			else {
+				configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
