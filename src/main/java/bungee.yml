@@ -2,3 +2,4 @@ name: ColonyBungeeCore
 author: ACrispyCookie
 version: 1.0
 main: net.colonymc.colonybungeecore.Main
+depends: [ColonyAPI]

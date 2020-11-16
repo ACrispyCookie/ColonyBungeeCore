@@ -1,6 +1,6 @@
 package net.colonymc.colonybungeecore;
 
-import net.colonymc.colonyapi.MainDatabase;
+import net.colonymc.colonyapi.database.MainDatabase;
 import net.colonymc.colonybungeecore.ranksystem.commands.ClaimCommand;
 import net.colonymc.colonybungeecore.ranksystem.commands.MyCodesCommand;
 import net.colonymc.colonybungeecore.reaction.ReactionCommand;
@@ -9,7 +9,6 @@ import net.colonymc.colonybungeecore.utils.commands.*;
 import net.colonymc.colonybungeecore.utils.listeners.*;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.api.scheduler.ScheduledTask;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
@@ -26,32 +25,22 @@ public class Main extends Plugin {
 	private static File file, logfile;
 	private static Configuration configuration;
 	private static Main instance;
-	private ScheduledTask checkForDatabase;
 	
 	public void onEnable() {
-		instance = this;
-		Runnable run = () -> {
-			try {
-				MainDatabase.isConnected();
-				if(!MainDatabase.isConnecting()) {
-					checkForDatabase.cancel();
-					System.out.println("[ColonyBungeeCore] has been enabled successfully!");
-					loadFile();
-					loadLogFile();
-					loadUtilCommands();
-					loadUtilListeners();
-					loadRankCommands();
-					loadShopRankCommands();
-					setupSkyblockReactionsGame();
-				}
-				else {
-					System.out.println("[ColonyBungeeCore] Couldn't connect to the main database!");
-				}
-			} catch(NoSuchMethodError ignored) {
-
-			}
-		};
-		checkForDatabase = ProxyServer.getInstance().getScheduler().schedule(this, run, 0, 2, TimeUnit.SECONDS);
+		if(MainDatabase.isConnected()) {
+			instance = this;
+			System.out.println("[ColonyBungeeCore] has been enabled successfully!");
+			loadFile();
+			loadLogFile();
+			loadUtilCommands();
+			loadUtilListeners();
+			loadRankCommands();
+			loadShopRankCommands();
+			setupSkyblockReactionsGame();
+		}
+		else {
+			System.out.println("[ColonyBungeeCore] Couldn't connect to the main database!");
+		}
 	}
 
 	private void setupSkyblockReactionsGame() {

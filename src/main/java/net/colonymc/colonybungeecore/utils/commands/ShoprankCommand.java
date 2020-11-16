@@ -1,6 +1,6 @@
 package net.colonymc.colonybungeecore.utils.commands;
 
-import net.colonymc.colonyapi.MainDatabase;
+import net.colonymc.colonyapi.database.MainDatabase;
 import net.colonymc.colonybungeecore.Main;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;

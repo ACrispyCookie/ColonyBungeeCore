@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import net.colonymc.colonyapi.MainDatabase;
+import net.colonymc.colonyapi.database.MainDatabase;
 import net.colonymc.colonybungeecore.Main;
 import net.colonymc.colonybungeecore.Messages;
 import net.colonymc.colonybungeecore.UUIDGetter;

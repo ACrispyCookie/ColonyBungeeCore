@@ -1,6 +1,6 @@
 package net.colonymc.colonybungeecore.ranksystem.commands;
 
-import net.colonymc.colonyapi.MainDatabase;
+import net.colonymc.colonyapi.database.MainDatabase;
 import net.colonymc.colonybungeecore.Main;
 import net.colonymc.colonybungeecore.Messages;
 import net.md_5.bungee.api.ChatColor;
