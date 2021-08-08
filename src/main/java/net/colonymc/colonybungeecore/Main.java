@@ -126,7 +126,7 @@ public class Main extends Plugin {
 		getProxy().getPluginManager().registerCommand(this, new RankCommand("mediarank"));
 		getProxy().getPluginManager().registerCommand(this, new RankCommand("helper"));
 		getProxy().getPluginManager().registerCommand(this, new RankCommand("moderator"));
-		getProxy().getPluginManager().registerCommand(this, new RankCommand("admin"));
+		getProxy().getPluginManager().registerCommand(this, new RankCommand("administrator"));
 		getProxy().getPluginManager().registerCommand(this, new RankCommand("manager"));
 		getProxy().getPluginManager().registerCommand(this, new RankCommand("owner"));
 	}
