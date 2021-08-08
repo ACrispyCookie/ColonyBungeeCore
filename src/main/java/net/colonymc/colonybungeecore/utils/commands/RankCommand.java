@@ -44,9 +44,9 @@ public class RankCommand extends Command implements TabExecutor{
 						if(ProxyServer.getInstance().getPlayer(args[0]) != null) {
 							ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
 							switch(name) {
-							case "admin":
+							case "administrator":
 								if(p.getUniqueId().toString().equals("37c3bfb6-6fa9-4602-a9bd-a1e95baea85f")) {
-									p.chat("/lp user " + args[0] + " parent set admin");
+									p.chat("/lp user " + args[0] + " parent set administrator");
 									p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou set &d" + target.getName() + "&f's rank to &d&lAdmin")));
 									target.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYour rank is now &d&lAdmin")));
 								}
@@ -96,7 +96,7 @@ public class RankCommand extends Command implements TabExecutor{
 							switch(name) {
 							case "admin":
 								if(p.getUniqueId().toString().equals("37c3bfb6-6fa9-4602-a9bd-a1e95baea85f")) {
-									p.chat("/lp user " + args[0] + " parent set admin");
+									p.chat("/lp user " + args[0] + " parent set administrator");
 									p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou set &d" + args[0] + "&f's rank to &d&lAdmin")));
 								}
 								else {
