@@ -1,7 +1,9 @@
 # ColonyBungeeCore
-A core for bungeecord proxies which contains some basic informative commands.
+ColonyBungeeCore is the main plugin for the bungeecord server on ColonyMC. It contains features such as:
 
-Features:
-  - Basic commands ("/staffchat", "/voucher", "/maintenance")
-  - Rank voucher system
-  - Reaction game
+
+  - Maintenance mode
+  - Chat managing
+  - Rank vouchers
+  - Staff chat
+  - Reaction games
