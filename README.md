@@ -3,7 +3,6 @@ ColonyBungeeCore is the main plugin for the bungeecord server on ColonyMC. It co
 
 
   - Maintenance mode
-  - Chat managing
   - Rank vouchers
   - Staff chat
   - Reaction games
