@@ -38,7 +38,7 @@ public class ClaimCommand extends Command{
 										p.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &cThis code has been claimed by someone else!")));
 									}
 									else {
-										String rank = rs.getString("rank");
+										String rank = rs.getString("rankName");
 										if(!p.hasPermission(rank.toLowerCase() + ".store")) {
 											MainDatabase.sendStatement("UPDATE VoucherCodes SET claimed='" + p.getUniqueId().toString()
 													+ "' WHERE voucherCode='" + rs.getString("voucherCode") + "';");

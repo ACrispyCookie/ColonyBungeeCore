@@ -63,7 +63,7 @@ public class VoucherCommand extends Command implements TabExecutor{
 							}
 							if(rankExists) {
 								String token = getRandomToken();
-								MainDatabase.sendStatement("INSERT INTO VoucherCodes (name, uuid, rank, voucherCode, boughtOn, claimed) "
+								MainDatabase.sendStatement("INSERT INTO VoucherCodes (name, uuid, rankName, voucherCode, boughtOn, claimed) "
 										+ "VALUES ('" + target.getName() + "', '" + target.getUniqueId().toString() + "', '" + args[2].substring(0, 1).toUpperCase() + args[2].substring(1).toLowerCase() + "', '" + token + "', " + System.currentTimeMillis() + ", 0);");
 								sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou gave &d" + target.getName() + " &fa rank voucher for the rank &d" + args[2] + "&f!")));
 							}
@@ -81,7 +81,7 @@ public class VoucherCommand extends Command implements TabExecutor{
 							}
 							if(rankExists) {
 								String token = getRandomToken();
-								MainDatabase.sendStatement("INSERT INTO VoucherCodes (name, uuid, rank, voucherCode, boughtOn, claimed) "
+								MainDatabase.sendStatement("INSERT INTO VoucherCodes (name, uuid, rankName, voucherCode, boughtOn, claimed) "
 										+ "VALUES ('" + args[1] + "', '" + UUIDGetter.getUUID(args[1]) + "', '" + args[2].substring(0, 1).toUpperCase() + args[2].substring(1).toLowerCase() + "', '" + token + "', " + System.currentTimeMillis() + ", 0);");
 								sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou gave &d" + args[1] + " &fa rank voucher for the rank &d" + args[2] + "&f!")));
 							}
@@ -103,7 +103,7 @@ public class VoucherCommand extends Command implements TabExecutor{
 						try {
 							ResultSet rs = MainDatabase.getResultSet("SELECT * FROM VoucherCodes WHERE voucherCode='" + args[1] + "';");
 							if(rs.next()) {
-								sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou removed the voucher &d" + args[1] + " &ffrom the player &d" + rs.getString("name") + " &ffor the rank &d" + rs.getString("rank") +"&f!")));
+								sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', " &5&l» &fYou removed the voucher &d" + args[1] + " &ffrom the player &d" + rs.getString("name") + " &ffor the rank &d" + rs.getString("rankName") +"&f!")));
 								MainDatabase.sendStatement("DELETE FROM VoucherCodes WHERE voucherCode='" + args[1] + "';");
 							}
 							else {
@@ -124,7 +124,7 @@ public class VoucherCommand extends Command implements TabExecutor{
 									TextComponent ranks = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&f&m------------------------------------------------------------\n &5&l» &fRank vouchers of the player &d" + rs.getString("name") + "&f:\n"));
 									SimpleDateFormat sdm = new SimpleDateFormat("dd/MM/yy");
 									ranks.addExtra(ChatColor.translateAlternateColorCodes('&', "\n &5&l» &fVoucher Code: &d" + rs.getString("voucherCode") + "\n     &fRank: &d" 
-									+ rs.getString("rank") + "\n     Purchased on: &d" + sdm.format(new Date(rs.getLong("boughtOn")))));
+									+ rs.getString("rankName") + "\n     Purchased on: &d" + sdm.format(new Date(rs.getLong("boughtOn")))));
 									if(!rs.getString("claimed").equals("0")) {
 										ranks.addExtra(ChatColor.translateAlternateColorCodes('&', "\n     &c(Claimed)\n"));
 									}
@@ -133,7 +133,7 @@ public class VoucherCommand extends Command implements TabExecutor{
 									}
 									while(rs.next()) {
 										ranks.addExtra(ChatColor.translateAlternateColorCodes('&', "\n &5&l» &fVoucher Code: &d" + rs.getString("voucherCode") + "\n     &fRank: &d" 
-										+ rs.getString("rank") + "\n     Purchased on: &d" + sdm.format(new Date(rs.getLong("boughtOn")))));
+										+ rs.getString("rankName") + "\n     Purchased on: &d" + sdm.format(new Date(rs.getLong("boughtOn")))));
 										if(!rs.getString("claimed").equals("0")) {
 											ranks.addExtra(ChatColor.translateAlternateColorCodes('&', "\n     &c(Claimed)\n"));
 										}

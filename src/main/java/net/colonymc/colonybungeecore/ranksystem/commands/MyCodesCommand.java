@@ -32,7 +32,7 @@ public class MyCodesCommand extends Command {
 					ResultSet rs = MainDatabase.getResultSet("SELECT * FROM VoucherCodes WHERE uuid='" + p.getUniqueId().toString() + "';");
 					while(rs.next()) {
 						ranks.addExtra(ChatColor.translateAlternateColorCodes('&', "\n &5&l» &fVoucher Code: &d" + rs.getString("voucherCode") + "\n     &fRank: &d" 
-						+ rs.getString("rank") + "\n     Purchased on: &d" + sdm.format(new Date(rs.getLong("boughtOn")))));
+						+ rs.getString("rankName") + "\n     Purchased on: &d" + sdm.format(new Date(rs.getLong("boughtOn")))));
 						if(!rs.getString("claimed").equals("0")) {
 							ranks.addExtra(ChatColor.translateAlternateColorCodes('&', "\n     &c(Claimed)\n"));
 						}
@@ -42,9 +42,9 @@ public class MyCodesCommand extends Command {
 					}
 					if(!ranks.toPlainText().isEmpty()) {
 						TextComponent finaltext = new TextComponent(ChatColor.translateAlternateColorCodes
-								('&', ChatColor.translateAlternateColorCodes('&', "&f&m--------------------&r &5&lYour Voucher Codes &f&m--------------------")));
+								('&', ChatColor.translateAlternateColorCodes('&', "&f&m--------------&r &5&lYour Voucher Codes &f&m--------------")));
 						finaltext.addExtra(ranks);
-						finaltext.addExtra(ChatColor.translateAlternateColorCodes('&', "&f&m------------------------------------------------------------"));
+						finaltext.addExtra(ChatColor.translateAlternateColorCodes('&', "&f&m-----------------------------------------------------"));
 						p.sendMessage(finaltext);
 					}
 					else {
